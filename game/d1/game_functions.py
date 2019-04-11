@@ -55,9 +55,21 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
     elif event.key == pygame.K_DOWN:
         ship.moving_down = True
     elif event.key == pygame.K_SPACE:
-        if len(bullets) < ai_settings.bullet_allowed:
-            new_bullet = Bullet(ai_settings, screen, ship)
-            bullets.add(new_bullet)
+        fire_bullet(ai_settings, bullets, screen, ship)
+
+
+def fire_bullet(ai_settings, bullets, screen, ship):
+    """
+    发射子弹方法
+    :param ai_settings:
+    :param bullets:
+    :param screen:
+    :param ship:
+    :return:
+    """
+    if len(bullets) < ai_settings.bullet_allowed:
+        new_bullet = Bullet(ai_settings, screen, ship)
+        bullets.add(new_bullet)
 
 
 def update_screen(ai_settings, screen, ship, bullets):
