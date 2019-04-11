@@ -1,7 +1,10 @@
 import sys
 import pygame
 
-def check_events(ship):
+from game.d1.bullet import Bullet
+
+
+def check_events(ai_settings, screen, ship,bullets):
     """
     响应键盘和鼠标事件
     :return:
@@ -11,7 +14,7 @@ def check_events(ship):
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ship)
+            check_keydown_events(event, ai_settings, screen, ship,bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
@@ -33,11 +36,14 @@ def check_keyup_events(event, ship):
         ship.moving_down = False
 
 
-def check_keydown_events(event, ship):
+def check_keydown_events(event, ai_settings, screen, ship,bullets):
     """
     按下事件
     :param event:
+    :param ai_settings:
+    :param screen:
     :param ship:
+    :param bullets:
     :return:
     """
     if event.key == pygame.K_RIGHT:
@@ -48,17 +54,24 @@ def check_keydown_events(event, ship):
         ship.moving_up = True
     elif event.key == pygame.K_DOWN:
         ship.moving_down = True
+    elif event.key == pygame.K_SPACE:
+        new_bullet = Bullet(ai_settings,screen,ship)
+        bullets.add(new_bullet)
 
 
-def update_screen(ai_settings,screen,ship):
+def update_screen(ai_settings, screen, ship,bullets):
     """
     每次都循环是都重绘屏幕
-    :param ai_settings: settings
+    :param ai_settings:
     :param screen:
     :param ship:
+    :param bullets:
     :return:
     """
     # 绘制背景颜色
     screen.fill(ai_settings.bg_color)
+    # 绘制子弹
+    for bullet in bullets.sprites():
+        bullet.draw_bullet()
     # 绘制
     ship.blitme()
